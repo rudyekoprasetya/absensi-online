@@ -1,29 +1,37 @@
-<div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Main</div>
-                            <a class="nav-link" href="<?=site_url('dashboard')?>">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                  Dashboard
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
-                </nav>
-            </div>
+<?php 
+$akses=$this->session->userdata('akses');
+?>
+
+<ul class="nav navbar-nav side-nav">
+<?php if($akses=='admin') {?>
+          <li><a href="<?php echo site_url('dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+          <li><a href="<?php echo site_url('admin/jenis') ?>"><i class="fa fa fa-user-md"></i> Jenis User</a></li>
+          <li><a href="<?php echo site_url('admin/status') ?>"><i class="fa fa-calendar"></i> Status Absen</a></li>
+          <li><a href="<?php echo site_url('admin/tipe') ?>"><i class="fa fa-gears"></i> Tipe Kerja</a></li>
+          <li><a href="<?php echo site_url('admin/user') ?>"><i class="fa fa-users"></i> Pengguna</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Laporan <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#"><i class="fa fa-book"></i> Absensi</a></li>
+          <li><a href="#"><i class="fa fa-book"></i> Rekapitulasi</a></li>
+        </ul>
+   </li>
+      <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Admin Menu <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><a href="<?php echo site_url('login/profil') ?>"><i class="fa fa-lock"></i> Ubah Password</a></li>
+        <li><a href="<?php echo site_url('login/logout') ?>" onclick="return confirm('Yakin Mau Keluar?');"><i class="fa fa-sign-out"></i> Log Out</a></li>
+      </ul>
+    </li>
+<?php } else if($akses=='user') {?>
+
+    <li><a href="<?php echo site_url('admin/user') ?>"><i class="fa fa-users"></i> Pengguna</a></li>           
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> User Menu <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><a href="<?php echo site_url('login/profil') ?>"><i class="fa fa-lock"></i> Ubah Password</a></li>
+        <li><a href="<?php echo site_url('login/logout') ?>" onclick="return confirm('Yakin Mau Keluar?');"><i class="fa fa-sign-out"></i> Log Out</a></li>
+      </ul>
+    </li>
+<?php } ?>
+</ul>
