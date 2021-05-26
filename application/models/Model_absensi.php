@@ -72,4 +72,9 @@ class Model_absensi extends CI_Model {
 			return FALSE;	 	
 		 }
 	}
+
+    public function cari_user($key) {
+        $query="SELECT a.id_user, a.email, a.nama, a.gender, a.hp, a.is_login, b.jenis, a.is_aktif FROM tb_user a JOIN tb_jenis b ON a.id_jenis=b.id_jenis WHERE a.is_aktif='no' AND a.email LIKE '%$key%'";
+        return $this->db->query($query);
+    }
 }

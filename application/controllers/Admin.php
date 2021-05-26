@@ -5,6 +5,8 @@ class Admin extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        //load model
+		$this->load->model('Model_absensi');
     }
 
     public function _crud_output($output = null) {
@@ -66,5 +68,26 @@ class Admin extends CI_Controller {
 		$data['output']=$crud->render();
 		$this->_crud_output($data);
 	}
+
+	public function useractivation() {
+		$data['judul'] = 'Aktivasi User';
+        $this->template->display('aktivasi_user', $data);
+	}
+
+	public function searchuser() {
+		$key=$this->input->post('key',true);
+		$data['judul'] = 'Aktivasi User';
+		$data['user']=$this->Model_absensi->cari_user($key);
+		$this->template->display('aktivasi_user',$data);
+	}
+
+	public function activated() {
+		$id_user=$this->uri->segment(3);
+		$aktif=$this->Model_absensi->update('tb_user',array('is_aktif'=>'yes'),array('id_user'=>$id_user));
+		$data['judul'] = 'Aktivasi User';
+		$this->session->set_flashdata('alert','User sudah diaktfikan!');
+        redirect('admin/useractivation');
+	}
+
 
 }
