@@ -26,15 +26,16 @@ class Api extends CI_Controller {
 		if(isset($_GET['apikey'])) {
 			$key=$this->is_key_valid($_GET['apikey']);
 			if($key) {
-				$email=$this->input->post('email',TRUE);
-				$password=$this->input->post('password',TRUE);
+				$email=$_GET['email'];
+				$password=$_GET['password'];
 				$login=$this->Model_absensi->cek($email,sha1($password));
 				if($login) {
 					$data_login=$this->Model_absensi->get_where('tb_user',array('email'=>$email,'is_aktif'=>'yes'));
 					if($data_login->num_rows() > 0) {
 						//update status login
 						$is_login=$this->Model_absensi->update('tb_user',array('is_login'=>'yes'),array('email'=>$email));
-						$data=array('email'=>$email,'logged_in'=>TRUE );
+						$data_user=$data_login->row();
+						$data=array('email'=>$email, 'id_user'=>$data_user->id_user, 'logged_in'=>TRUE );
 						$response=array(
 							'status' => http_response_code(200),
 							'data' => $data					
@@ -337,6 +338,96 @@ class Api extends CI_Controller {
 						'status' => http_response_code(200),
 						'data' => $data	
 					);
+			} else {
+				$response=array(
+					'status' => http_response_code(401),
+					'data' => 'Invalid Key'				
+				);
+			}
+		} else {
+			$response=array(
+					'status' => http_response_code(404),
+					'data' => 'No Key Provider'				
+				);
+		}
+		$this->output->set_output(json_encode($response));
+	}
+
+	public function absensi() {
+		if(isset($_GET['apikey'])) {
+			$key=$this->is_key_valid($_GET['apikey']);
+			if($key) {
+				$data=array(
+					'id_user'=>$this->input->post('id_user',true),
+					'id_tipe'=>$this->input->post('id_tipe',true),
+					'id_status'=>$this->input->post('id_status',true),
+					'tanggal'=>date('Y-m-d'),
+					'waktu'=>date('h:i:s'),
+					'lng'=>$this->input->post('long',true),
+					'lat'=>$this->input->post('lat',true),
+					'id_status'=>$this->input->post('id_status',true),
+					'is_valid'=>'yes'
+				);
+				//cek apakah sudah absen
+				$cekAbsen=$this->Model_absensi->get_where('tb_absensi',array('id_user'=>$this->input->post('id_user',true),'id_status'=>$this->input->post('id_status',true), 'tanggal'=>date('Y-m-d')));
+				//jika sudah ada
+				if($cekAbsen->num_rows() > 0) {
+					$response=array(
+						'status' => http_response_code(200),
+						'data' => false,
+						'msg' => 'Maaf Anda sudah Absen'				
+					);
+				} else { //jika belum simpan ke tabel
+					$save=$this->Model_absensi->insert('tb_absensi',$data);
+					if($save) {
+						$response=array(
+							'status' => http_response_code(200),
+							'data' => true,
+							'msg' => 'Absensi tersimpan'
+						);
+					} else {
+						$response=array(
+							'status' => http_response_code(400),
+							'data' => 'Bad Request'
+						);
+					}
+				}
+			} else {
+				$response=array(
+					'status' => http_response_code(401),
+					'data' => 'Invalid Key'				
+				);
+			}
+		} else {
+			$response=array(
+					'status' => http_response_code(404),
+					'data' => 'No Key Provider'				
+				);
+		}
+		$this->output->set_output(json_encode($response));	
+	}	
+
+	public function izin() {
+		if(isset($_GET['apikey'])) {
+			$key=$this->is_key_valid($_GET['apikey']);
+			if($key) {
+				$data=array(
+					'id_user'=>$this->input->post('id_user',true),
+					'tanggal'=>date('Y-m-d'),
+					'alasan'=>$this->input->post('alasan',true)
+				);
+				$save=$this->Model_absensi->insert('tb_izin',$data);
+				if($save) {
+					$response=array(
+						'status' => http_response_code(200),
+						'data' => 'izin tersimpan'
+					);	
+				} else {
+					$response=array(
+						'status' => http_response_code(400),
+						'data' => 'Bad Request'
+					);
+				}
 			} else {
 				$response=array(
 					'status' => http_response_code(401),

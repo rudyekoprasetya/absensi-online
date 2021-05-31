@@ -8,7 +8,7 @@ $akses=$this->session->userdata('akses');
           <li><a href="<?=site_url('admin/jenis') ?>"><i class="fa fa fa-user-md"></i> Jenis User</a></li>
           <li><a href="<?= site_url('admin/status') ?>"><i class="fa fa-calendar"></i> Status Absen</a></li>
           <li><a href="<?= site_url('admin/tipe') ?>"><i class="fa fa-gears"></i> Tipe Kerja</a></li>
-          <li><a href="<?= site_url('admin/user') ?>"><i class="fa fa-users"></i> User</a></li>
+          <li><a href="<?= site_url('admin/user') ?>"><i class="fa fa-users"></i> Data User</a></li>
           <li><a href="<?= site_url('admin/useractivation') ?>"><i class="fa fa-check-square"></i> Aktivasi User</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Laporan <b class="caret"></b></a>

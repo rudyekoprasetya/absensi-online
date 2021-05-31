@@ -62,7 +62,7 @@ class Admin extends CI_Controller {
 		//enkripsi password
 		$crud->callback_before_insert(array($this,'encrypt_password_callback'));
   		$crud->callback_before_update(array($this,'encrypt_password_callback'));
-		$crud->columns('email','nama','gender', 'hp', 'foto', 'is_login');		
+		$crud->columns('email','nama','gender', 'hp', 'foto', 'is_aktif', 'is_login');		
 		$crud->set_field_upload('foto','assets/uploads/foto_user');
 		$data['judul']='Manajemen User';
 		$data['output']=$crud->render();
