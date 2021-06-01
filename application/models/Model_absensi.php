@@ -77,4 +77,19 @@ class Model_absensi extends CI_Model {
         $query="SELECT a.id_user, a.email, a.nama, a.gender, a.hp, a.is_login, b.jenis, a.is_aktif FROM tb_user a JOIN tb_jenis b ON a.id_jenis=b.id_jenis WHERE a.is_aktif='no' AND a.email LIKE '%$key%'";
         return $this->db->query($query);
     }
+
+    public function lapAbsenByUser($id_user=null){
+        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE a.id_user='$id_user' ORDER BY a.tanggal DESC";
+        return $this->db->query($query);
+    }
+
+    public function lapAbsenRange($awal=null,$akhir=null){
+        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE DATE_FORMAT(a.tanggal,'%Y-%m-%d')>='$awal' AND DATE_FORMAT(a.tanggal,'%Y-%m-%d')<='$akhir'";
+        return $this->db->query($query);
+    }
+
+    public function labpIzinByUser($id_user=null) {
+        $query="SELECT a.id_izin, a.id_user, b.nama, a.tanggal, a.alasan FROM tb_izin a JOIN tb_user b ON a.id_user=b.id_user ORDER BY a.tanggal DESC WHERE a.id_user='$id_user'";
+        return $this->db->query($query);
+    }
 }

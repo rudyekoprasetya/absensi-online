@@ -365,7 +365,6 @@ class Api extends CI_Controller {
 					'waktu'=>date('h:i:s'),
 					'lng'=>$this->input->post('long',true),
 					'lat'=>$this->input->post('lat',true),
-					'id_status'=>$this->input->post('id_status',true),
 					'is_valid'=>'yes'
 				);
 				//cek apakah sudah absen
@@ -443,5 +442,32 @@ class Api extends CI_Controller {
 		$this->output->set_output(json_encode($response));
 	}
 
+	public function reportabsen() {
+		if(isset($_GET['apikey'])) {
+			$key=$this->is_key_valid($_GET['apikey']);
+			if($key) {
+				if(isset($_GET['id_user'])) {
+					$data=$this->Model_absensi->lapAbsenByUser($_GET['id_user'])->result();
+				} else if((isset($_GET['awal'])) && (isset($_GET['akhir']))) {
+					$data=$this->Model_absensi->lapAbsenRange($_GET['awal'],$_GET['akhir'])->result();
+				}
+				$response=array(
+					'status' => http_response_code(200),
+					'data' => $data			
+				);
+			} else {
+				$response=array(
+					'status' => http_response_code(401),
+					'data' => 'Invalid Key'				
+				);
+			}
+		} else {
+			$response=array(
+					'status' => http_response_code(404),
+					'data' => 'No Key Provider'				
+				);
+		}
+		$this->output->set_output(json_encode($response));
+	}
 
 }
