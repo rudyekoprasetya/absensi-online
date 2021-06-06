@@ -5,6 +5,7 @@ class Admin extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        if(!$this->session->userdata('logged_in')) {redirect('login','refresh');}//user harus login
         //load model
 		$this->load->model('Model_absensi');
     }
