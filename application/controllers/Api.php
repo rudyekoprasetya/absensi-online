@@ -226,7 +226,7 @@ class Api extends CI_Controller {
         if ($_FILES && $_FILES['foto']['name']) {
             $config['upload_path'] = './assets/uploads/foto_user/';
             $config['allowed_types'] = 'jpg|jpeg|png';
-            $config['max_size'] = 1024;
+            $config['max_size'] = 5000;
             $config['overwrite'] = true;
             $config['file_name'] = "imguser_" . $name;
             $this->upload->initialize($config);
@@ -386,7 +386,7 @@ class Api extends CI_Controller {
 					'id_tipe'=>$this->input->post('id_tipe',true),
 					'id_status'=>$this->input->post('id_status',true),
 					'tanggal'=>date('Y-m-d'),
-					'waktu'=>date('h:i:s'),
+					'waktu'=>date('H:i:s'),
 					'lng'=>$this->input->post('long',true),
 					'lat'=>$this->input->post('lat',true),
 					'is_valid'=>'yes'
@@ -434,22 +434,33 @@ class Api extends CI_Controller {
 		if(isset($_GET['apikey'])) {
 			$key=$this->is_key_valid($_GET['apikey']);
 			if($key) {
-				$data=array(
-					'id_user'=>$this->input->post('id_user',true),
-					'tanggal'=>date('Y-m-d'),
-					'alasan'=>$this->input->post('alasan',true)
-				);
-				$save=$this->Model_absensi->insert('tb_izin',$data);
-				if($save) {
+				//cek apakah sudah izin hari ini
+				$cekIzin=$this->Model_absensi->get_where('tb_izin',array('id_user'=>$this->input->post('id_user',true),'tanggal'=>date('Y-m-d')));
+				if($cekIzin->num_rows()>0) {
 					$response=array(
 						'status' => http_response_code(200),
-						'data' => 'izin tersimpan'
+						'data' => false,
+						'msg' => 'Anda sudah Izin hari ini'
 					);	
 				} else {
-					$response=array(
-						'status' => http_response_code(400),
-						'data' => 'Bad Request'
+					$data=array(
+						'id_user'=>$this->input->post('id_user',true),
+						'tanggal'=>date('Y-m-d'),
+						'alasan'=>$this->input->post('alasan',true)
 					);
+					$save=$this->Model_absensi->insert('tb_izin',$data);
+					if($save) {
+						$response=array(
+							'status' => http_response_code(200),
+							'data' => true,
+							'msg' => 'Berhasil menyimpan Izin'
+						);	
+					} else {
+						$response=array(
+							'status' => http_response_code(400),
+							'data' => 'Bad Request'
+						);
+					}
 				}
 			} else {
 				$response=array(
@@ -470,10 +481,10 @@ class Api extends CI_Controller {
 		if(isset($_GET['apikey'])) {
 			$key=$this->is_key_valid($_GET['apikey']);
 			if($key) {
-				if(isset($_GET['id_user'])) {
+				if((isset($_GET['awal'])) && (isset($_GET['akhir']))) {
+					$data=$this->Model_absensi->lapAbsenRange($_GET['awal'],$_GET['akhir'],$_GET['id_user'])->result();
+				} else {					
 					$data=$this->Model_absensi->lapAbsenByUser($_GET['id_user'])->result();
-				} else if((isset($_GET['awal'])) && (isset($_GET['akhir']))) {
-					$data=$this->Model_absensi->lapAbsenRange($_GET['awal'],$_GET['akhir'])->result();
 				}
 				$response=array(
 					'status' => http_response_code(200),
@@ -493,5 +504,35 @@ class Api extends CI_Controller {
 		}
 		$this->output->set_output(json_encode($response));
 	}
+
+	public function reportizin() {
+		if(isset($_GET['apikey'])) {
+			$key=$this->is_key_valid($_GET['apikey']);
+			if($key) {
+				if((isset($_GET['awal'])) && (isset($_GET['akhir']))) {
+					$data=$this->Model_absensi->lapIzinRange($_GET['awal'],$_GET['akhir'],$_GET['id_user'])->result();
+				} else {					
+					$data=$this->Model_absensi->lapIzinByUser($_GET['id_user'])->result();
+				}
+				$response=array(
+					'status' => http_response_code(200),
+					'data' => $data			
+				);
+			} else {
+				$response=array(
+					'status' => http_response_code(401),
+					'data' => 'Invalid Key'				
+				);
+			}
+		} else {
+			$response=array(
+					'status' => http_response_code(404),
+					'data' => 'No Key Provider'				
+				);
+		}
+		$this->output->set_output(json_encode($response));
+	}
+
+
 
 }
