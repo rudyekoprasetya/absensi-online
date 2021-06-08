@@ -54,7 +54,7 @@
 <script type="text/javascript">
 	var lng='';
 	var lt='';
-	navigator.geolocation.getCurrentPosition(function(res){
+	navigator.geolocation.watchPosition(function(res){
 		// alert('lokasi '+res.coords.latitude+', '+res.coords.longitude);	
 		 let lokasi=[res.coords.latitude, res.coords.longitude];
 		 lng=res.coords.longitude;
@@ -76,6 +76,9 @@
 	    }
 	    // console.log(result);
 	    L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
+	   },
+	   function(error){
+	   	alert(error.code);
 	   });
 
 
