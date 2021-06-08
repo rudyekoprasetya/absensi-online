@@ -27,6 +27,7 @@ $akses=$this->session->userdata('akses');
 <?php } else if($akses=='user') {?>
 
     <li><a href="<?= site_url('absensi') ?>"><i class="fa fa-calendar"></i> Absensi</a></li>           
+    <li><a href="<?= site_url('report/user') ?>"><i class="fa fa-bar-chart-o"></i> Report</a></li>           
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> User Menu <b class="caret"></b></a>
       <ul class="dropdown-menu">

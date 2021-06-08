@@ -79,12 +79,12 @@ class Model_absensi extends CI_Model {
     }
 
     public function lapAbsenByUser($id_user=null){
-        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE a.id_user='$id_user' ORDER BY a.tanggal DESC";
+        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, DATE_FORMAT(a.tanggal, '%W') AS hari, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE a.id_user='$id_user' ORDER BY a.tanggal DESC";
         return $this->db->query($query);
     }
 
     public function lapAbsenRange($awal,$akhir,$id_user){
-        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE DATE_FORMAT(a.tanggal,'%Y-%m-%d')>='$awal' AND DATE_FORMAT(a.tanggal,'%Y-%m-%d')<='$akhir' AND a.id_user='$id_user'";
+        $query="SELECT a.id_absen, a.id_user, b.nama, c.tipe_absen, d.status, DATE_FORMAT(a.tanggal, '%W') AS hari, d.set_waktu AS default_waktu, a.tanggal, a.waktu, a.lng, a.lat, a.is_valid FROM tb_absensi a JOIN tb_user b ON a.id_user=b.id_user JOIN tb_tipe c ON a.id_tipe=c.id_tipe JOIN tb_status d ON a.id_status=d.id_status WHERE DATE_FORMAT(a.tanggal,'%Y-%m-%d')>='$awal' AND DATE_FORMAT(a.tanggal,'%Y-%m-%d')<='$akhir' AND a.id_user='$id_user'";
         return $this->db->query($query);
     }
 

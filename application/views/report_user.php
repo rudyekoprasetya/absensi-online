@@ -4,19 +4,11 @@
 
 <div class="panel-body">
   <div class="row">
-  	<div class="col-lg-4">
+  	<div class="col-lg-6">
   		<input type="date" name="awal" class="form-control awal" placeholder="tanggal awal">
   	</div>
-  	<div class="col-lg-4">
-  		<input type="date" name="akhir" class="form-control akhir" placeholder="tanggal akhir">
-  	</div>
-  	<div class="col-lg-4">
-  		<select class="form-control user" onchange="cariReport()">
-  			<option>-- Pilih User--</option>
-<?php foreach($user as $row) { ?>
-  			<option value="<?= $row->id_user?>"><?= $row->nama ?></option>
-<?php } ?>
-  		</select>
+  	<div class="col-lg-6">
+  		<input type="date" name="akhir" class="form-control akhir" placeholder="tanggal akhir" onchange="cariReport()">
   	</div>
   </div>
   <hr>
@@ -81,7 +73,7 @@
 	var map = L.map('maps-absen');
 
 	function cariReport() {
-		let id_user=$('.user').val();
+		let id_user=<?= $id_user;?>;
 		let awal=$('.awal').val();
 		let akhir=$('.akhir').val();
 		// console.log(id_user);
