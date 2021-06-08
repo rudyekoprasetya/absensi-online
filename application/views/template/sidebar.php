@@ -13,7 +13,7 @@ $akses=$this->session->userdata('akses');
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Laporan <b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-book"></i> Absensi</a></li>
+          <li><a href="<?= site_url('report');?>"><i class="fa fa-book"></i> Absensi</a></li>
           <li><a href="#"><i class="fa fa-book"></i> Rekapitulasi</a></li>
         </ul>
    </li>
@@ -26,7 +26,7 @@ $akses=$this->session->userdata('akses');
     </li>
 <?php } else if($akses=='user') {?>
 
-    <li><a href="<?= site_url('admin/user') ?>"><i class="fa fa-users"></i> Pengguna</a></li>           
+    <li><a href="<?= site_url('absensi') ?>"><i class="fa fa-calendar"></i> Absensi</a></li>           
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> User Menu <b class="caret"></b></a>
       <ul class="dropdown-menu">

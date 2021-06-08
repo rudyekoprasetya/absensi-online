@@ -41,7 +41,7 @@ class Login extends CI_controller {
 				$akses='user';
 				$data=array('email'=>$email,'akses'=>$akses,'logged_in'=>TRUE );
 				$this->session->set_userdata($data);
-				redirect('dashboard');
+				redirect('absensi');
 			} else {			
 				$this->session->set_flashdata('alert','Email dan Password tidak sesuai!');
 				redirect('login','refresh');	
