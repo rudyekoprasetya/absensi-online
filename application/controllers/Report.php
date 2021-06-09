@@ -24,5 +24,11 @@ class Report extends CI_Controller {
         $this->template->display('report_user', $data);
     }
 
+    public function izin() {
+        $data['judul'] = 'Report Izin';
+        $data['user'] = $this->Model_absensi->get_all('tb_user')->result();
+        $this->template->display('report_izin', $data);
+    }
+
 
 }

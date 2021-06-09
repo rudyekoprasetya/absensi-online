@@ -14,7 +14,7 @@ $akses=$this->session->userdata('akses');
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Laporan <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="<?= site_url('report');?>"><i class="fa fa-book"></i> Absensi</a></li>
-          <li><a href="#"><i class="fa fa-book"></i> Rekapitulasi</a></li>
+          <li><a href="<?= site_url('report/izin');?>"><i class="fa fa-book"></i> Izin</a></li>
         </ul>
    </li>
       <li class="dropdown">
