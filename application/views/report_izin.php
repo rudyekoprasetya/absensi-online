@@ -87,7 +87,7 @@
 
 						    a+='</tbody>';
 				  a+='</table>';
-				  a+='<p><button class="btn btn-success"><i class="fa fa-print"></i> Export Excel</button></p>';
+				  a+='<p><a href="<?= site_url("report/xlsizin")?>?id_user='+id_user+'&awal='+awal+'&akhir='+akhir+'" class="btn btn-success" target="_blank"><i class="fa fa-print"></i> Export Excel</a></p>';
 					$('#tempat_report').html(a);
 					$('#tempat_report').fadeIn(500);
 				}, error: function(err) {
